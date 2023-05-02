@@ -1,0 +1,21 @@
+# Archivos de estado local de Terraform
+*.tfstate
+*.tfstate.backup
+
+# Directorio de configuración de Terraform
+.terraform/
+
+# Archivos de bloqueo de Terraform
+*.tflock
+
+# Archivos de configuración de Terraform Cloud
+.terraformrc
+terraform.rc
+*.tfvars
+
+# Archivos y directorios creados por el sistema
+.DS_Store
+Thumbs.db
+
+# Archivos de configuración de proveedores (si contienen información sensible)
+# provider.tf (o el archivo que contiene la configuración del proveedor)
