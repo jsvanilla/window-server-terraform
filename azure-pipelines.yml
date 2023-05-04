@@ -1,0 +1,39 @@
+trigger:
+  branches:
+    include:
+      - main
+
+jobs:
+  - job: InstallDependencies
+    displayName: "Install Terraform and AWS CLI"
+    pool:
+      vmImage: "ubuntu-latest"
+    steps:
+      - script: |
+          sudo apt-get update
+          sudo apt-get install -y unzip
+          wget https://releases.hashicorp.com/terraform/1.0.11/terraform_1.0.11_linux_amd64.zip
+          unzip terraform_1.0.11_linux_amd64.zip
+          sudo mv terraform /usr/local/bin/
+          rm terraform_1.0.11_linux_amd64.zip
+          terraform -version
+          curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+          unzip awscliv2.zip
+          sudo ./aws/install
+          rm awscliv2.zip
+          aws --version
+        displayName: "Install Terraform and AWS CLI"
+
+  - job: TerraformApply
+    displayName: "Terraform Apply"
+    dependsOn: InstallDependencies
+    pool:
+      vmImage: "ubuntu-latest"
+    steps:
+      - checkout: self
+      - script: |
+          terraform init && terraform validate && terraform plan -out=tfplan && terraform apply --auto-approve tfplan
+        displayName: "Terraform Execute"
+        env:
+          AWS_ACCESS_KEY_ID: $(AWS_ACCESS_KEY_ID)
+          AWS_SECRET_ACCESS_KEY: $(AWS_SECRET_ACCESS_KEY)
