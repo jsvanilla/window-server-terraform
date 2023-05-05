@@ -7,7 +7,8 @@ jobs:
   - job: InstallDependencies
     displayName: "Install Terraform and AWS CLI"
     pool:
-      vmImage: "ubuntu-latest"
+      name: "Azure Pipelines"
+      #vmImage: "ubuntu-latest"
     steps:
       - script: |
           sudo apt-get update
@@ -28,7 +29,8 @@ jobs:
     displayName: "Terraform Apply"
     dependsOn: InstallDependencies
     pool:
-      vmImage: "ubuntu-latest"
+      name: "Azure Pipelines"
+      #vmImage: "ubuntu-latest"
     steps:
       - checkout: self
       - script: |
